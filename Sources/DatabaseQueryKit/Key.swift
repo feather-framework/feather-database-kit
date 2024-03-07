@@ -6,6 +6,7 @@
 //
 
 public struct Key<T>:
+    Sendable,
     Codable,
     Equatable,
     Hashable,
