@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Tibor Bodecs on 07/03/2024.
 //
@@ -15,7 +15,7 @@ public protocol QueryBuilderDelete: QueryBuilderSchema {
         _ op: SQLBinaryOperator,
         _ value: E
     ) async throws
-    
+
     func delete<E: Encodable>(
         _ fieldKey: Row.FieldKeys,
         _ op: SQLBinaryOperator,
@@ -29,7 +29,7 @@ extension QueryBuilderDelete {
         _ fieldKey: Row.FieldKeys,
         _ op: SQLBinaryOperator,
         _ value: E
-    ) async throws  {
+    ) async throws {
         try await run { db in
             try await db
                 .delete(from: Self.tableName)
@@ -37,12 +37,12 @@ extension QueryBuilderDelete {
                 .run()
         }
     }
-    
+
     public func delete<E: Encodable>(
         _ fieldKey: Row.FieldKeys,
         _ op: SQLBinaryOperator,
         _ value: [E]
-    ) async throws  {
+    ) async throws {
         try await run { db in
             try await db
                 .delete(from: Self.tableName)

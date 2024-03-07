@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol QueryBuilderPrimaryKey: QueryBuilderSchema {
-    
+
     associatedtype PrimaryField: QueryFieldKey
 
     static var primaryKey: PrimaryField { get }

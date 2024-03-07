@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Tibor Bodecs on 07/03/2024.
 //
@@ -16,7 +16,7 @@ public protocol QueryBuilderFirst: QueryBuilderSchema {
         _ value: E,
         _ direction: QueryDirection
     ) async throws -> Row?
-    
+
     func first<E: Encodable>(
         _ fieldKey: Row.FieldKeys,
         _ op: SQLBinaryOperator,
@@ -45,7 +45,7 @@ extension QueryBuilderFirst {
                 .first(decoding: Row.self)
         }
     }
-    
+
     public func first<E: Encodable>(
         _ fieldKey: Row.FieldKeys,
         _ op: SQLBinaryOperator,

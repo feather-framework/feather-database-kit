@@ -14,7 +14,6 @@ class TestCase: XCTestCase {
     var eventLoopGroup: EventLoopGroup!
     var components: ComponentRegistry!
 
-
     override func setUp() async throws {
         self.eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: 1)
         components = ComponentRegistry()

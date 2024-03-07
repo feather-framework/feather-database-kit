@@ -9,23 +9,23 @@ import FeatherRelationalDatabase
 import SQLKit
 
 public protocol QueryBuilderSchema {
-    
+
     static var tableName: String { get }
 
     associatedtype Row: QueryModel
-    
+
     var db: Database { get }
-    
+
     func run<T>(
         _ block: ((SQLDatabase) async throws -> T)
     ) async throws -> T
 }
 
 extension QueryBuilderSchema {
-    
+
     public func run<T>(
         _ block: ((SQLDatabase) async throws -> T)
     ) async throws -> T {
-        return try await block(db.sqlDatabase)
+        try await block(db.sqlDatabase)
     }
 }

@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Tibor Bodecs on 07/03/2024.
 //
@@ -13,7 +13,7 @@ public enum QueryDirection {
 }
 
 extension QueryDirection {
-    
+
     var sqlValue: SQLDirection {
         switch self {
         case .asc: .ascending

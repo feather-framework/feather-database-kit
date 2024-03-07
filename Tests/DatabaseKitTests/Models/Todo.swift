@@ -1,18 +1,18 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Tibor Bodecs on 07/03/2024.
 //
 
-import FeatherRelationalDatabase
-import DatabaseQueryKit
 import DatabaseMigrationKit
+import DatabaseQueryKit
+import FeatherRelationalDatabase
 import MigrationKit
 import SQLKit
 
 enum Todo {
-    
+
     // @DatabaseQueryModel
     struct Model: QueryModel {
 
@@ -23,15 +23,15 @@ enum Todo {
             case notes
         }
         static let fieldKeys = CodingKeys.self
-        
+
         // MARK: - fields
         let id: Key<Todo>
         let title: String
         let notes: String?
     }
-    
+
     // @DatabaseQueryBuilder("todo", Model.self)
-    struct QueryBuilder: 
+    struct QueryBuilder:
         QueryBuilderSchema,
         QueryBuilderAll,
         QueryBuilderCount,

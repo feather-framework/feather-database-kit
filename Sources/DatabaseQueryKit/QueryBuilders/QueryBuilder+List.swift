@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Tibor Bodecs on 07/03/2024.
 //
@@ -21,7 +21,7 @@ public struct SimpleListQuery<F: QueryFieldKey>: ListQueryInterface {
     public let page: QueryPage
     public let sort: QuerySort<F>
     public let search: QueryFilter<F>?
-    
+
     public init(
         page: QueryPage,
         sort: QuerySort<F>,
@@ -50,9 +50,8 @@ public protocol QueryBuilderList: QueryBuilderSchema {
     ) async throws -> SimpleListResult<Row>
 }
 
-
 extension SQLSelectBuilder {
-    
+
     func applySortAndFilter<T: QueryFieldKey>(
         _ query: SimpleListQuery<T>
     ) -> SQLSelectBuilder {
@@ -80,15 +79,18 @@ extension QueryBuilderList {
         _ query: SimpleListQuery<Row.FieldKeys>
     ) async throws -> SimpleListResult<Row> {
         try await run { db in
-            
-            let total = try await db
+
+            let total =
+                try await db
                 .select()
                 .from(Self.tableName)
                 .column(SQLFunction("COUNT"), as: "count")
                 .applySortAndFilter(query)
-                .first(decoding: RowCount.self)?.count ?? 0
-            
-            let items = try await db
+                .first(decoding: RowCount.self)?
+                .count ?? 0
+
+            let items =
+                try await db
                 .select()
                 .from(Self.tableName)
                 .column("*")

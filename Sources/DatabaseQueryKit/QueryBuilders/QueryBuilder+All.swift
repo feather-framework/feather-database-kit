@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Tibor Bodecs on 07/03/2024.
 //
@@ -17,7 +17,7 @@ public protocol QueryBuilderAll: QueryBuilderSchema {
         _ op: SQLBinaryOperator,
         _ value: E
     ) async throws -> [Row]
-    
+
     func all<E: Encodable>(
         _ fieldKey: Row.FieldKeys,
         _ op: SQLBinaryOperator,
@@ -36,7 +36,7 @@ extension QueryBuilderAll {
                 .all(decoding: Row.self)
         }
     }
-    
+
     public func all<E: Encodable>(
         _ fieldKey: Row.FieldKeys,
         _ op: SQLBinaryOperator,
@@ -51,7 +51,7 @@ extension QueryBuilderAll {
                 .all(decoding: Row.self)
         }
     }
-    
+
     public func all<E: Encodable>(
         _ fieldKey: Row.FieldKeys,
         _ op: SQLBinaryOperator,

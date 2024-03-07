@@ -1,15 +1,15 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Tibor Bodecs on 07/03/2024.
 //
 
-@preconcurrency import SQLKit
 import FeatherRelationalDatabase
+@preconcurrency import SQLKit
 
 public struct Database: Sendable {
-    
+
     let sqlDatabase: SQLDatabase
 
     public init(_ sqlDatabase: SQLDatabase) {
@@ -24,4 +24,3 @@ extension RelationalDatabaseComponent {
         return .init(sqlDatabase)
     }
 }
-

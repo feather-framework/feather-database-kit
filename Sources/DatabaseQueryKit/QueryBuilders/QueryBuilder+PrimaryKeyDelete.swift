@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Tibor Bodecs on 07/03/2024.
 //
@@ -12,7 +12,7 @@ public protocol QueryBuilderPrimaryKeyDelete: QueryBuilderPrimaryKey {
     func delete<E: Encodable>(
         _ value: E
     ) async throws
-    
+
     func delete<E: Encodable>(
         _ value: [E]
     ) async throws

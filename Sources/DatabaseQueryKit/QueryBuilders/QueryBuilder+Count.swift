@@ -31,10 +31,11 @@ extension QueryBuilderCount {
                 .select()
                 .from(Self.tableName)
                 .column(SQLFunction("COUNT"), as: "count")
-                .first(decoding: RowCount.self)?.count ?? 0
+                .first(decoding: RowCount.self)?
+                .count ?? 0
         }
     }
-    
+
     public func count(
         _ fieldKey: Row.FieldKeys,
         _ op: SQLBinaryOperator,
@@ -54,7 +55,8 @@ extension QueryBuilderCount {
                     as: "count"
                 )
                 .where(fieldKey.sqlValue, op, SQLBind(value))
-                .first(decoding: RowCount.self)?.count ?? 0
+                .first(decoding: RowCount.self)?
+                .count ?? 0
         }
     }
 }
