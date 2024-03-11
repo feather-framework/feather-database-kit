@@ -8,17 +8,29 @@
 import SQLKit
 
 public struct QueryFilter<F: QueryFieldKey>: QueryFilterInterface {
-    public let field: F
-    public let method: SQLBinaryOperator
-    public let value: Encodable
 
-    public init(
+    public let field: F
+    public let `operator`: SQLBinaryOperator
+    public var value: SQLExpression
+
+    public init<T: Encodable>(
         field: F,
-        method: SQLBinaryOperator,
-        value: Encodable
+        operator: SQLBinaryOperator,
+        value: [T]
     ) {
         self.field = field
-        self.method = method
-        self.value = value
+        self.operator = `operator`
+        self.value = SQLBind.group(value)
     }
+
+    public init<T: Encodable>(
+        field: F,
+        operator: SQLBinaryOperator,
+        value: T
+    ) {
+        self.field = field
+        self.operator = `operator`
+        self.value = SQLBind(value)
+    }
+
 }

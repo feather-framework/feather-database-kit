@@ -20,7 +20,12 @@ public struct Database: Sendable {
 extension RelationalDatabaseComponent {
 
     public func database() async throws -> Database {
-        let sqlDatabase = try await connection()
-        return .init(sqlDatabase)
+        do {
+            let sqlDatabase = try await connection()
+            return .init(sqlDatabase)
+        }
+        catch {
+            throw Database.Error.connection(error)
+        }
     }
 }

@@ -5,6 +5,8 @@
 //  Created by Tibor Bodecs on 07/03/2024.
 //
 
+import SQLKit
+
 public struct QueryLimit {
 
     public let value: UInt
@@ -15,5 +17,15 @@ public struct QueryLimit {
 
     var sqlValue: Int {
         Int(value)
+    }
+}
+
+extension SQLSelectBuilder {
+
+    func applyLimit(_ limit: QueryLimit? = nil) -> Self {
+        guard let limit else {
+            return self
+        }
+        return self.limit(limit.sqlValue)
     }
 }
