@@ -10,55 +10,25 @@ import SQLKit
 
 public protocol QueryBuilderFirst: QueryBuilderSchema {
 
-    func first<E: Encodable>(
-        _ fieldKey: Row.FieldKeys,
-        _ op: SQLBinaryOperator,
-        _ value: E,
-        _ direction: QueryDirection
-    ) async throws -> Row?
-
-    func first<E: Encodable>(
-        _ fieldKey: Row.FieldKeys,
-        _ op: SQLBinaryOperator,
-        _ value: [E],
-        _ direction: QueryDirection
+    func first(
+        filter: QueryFilter<Row.FieldKeys>,
+        order: QueryOrder<Row.FieldKeys>?
     ) async throws -> Row?
 }
 
 extension QueryBuilderFirst {
 
-    public func first<E: Encodable>(
-        _ fieldKey: Row.FieldKeys,
-        _ op: SQLBinaryOperator,
-        _ value: E,
-        _ direction: QueryDirection = .asc
+    public func first(
+        filter: QueryFilter<Row.FieldKeys>,
+        order: QueryOrder<Row.FieldKeys>? = nil
     ) async throws -> Row? {
         try await run { db in
             try await db
                 .select()
                 .from(Self.tableName)
                 .column("*")
-                .where(fieldKey.sqlValue, op, value)
-                .orderBy(fieldKey.sqlValue, direction.sqlValue)
-                .limit(1)
-                .offset(0)
-                .first(decoding: Row.self)
-        }
-    }
-
-    public func first<E: Encodable>(
-        _ fieldKey: Row.FieldKeys,
-        _ op: SQLBinaryOperator,
-        _ value: [E],
-        _ direction: QueryDirection = .asc
-    ) async throws -> Row? {
-        try await run { db in
-            try await db
-                .select()
-                .from(Self.tableName)
-                .column("*")
-                .where(fieldKey.sqlValue, op, value)
-                .orderBy(fieldKey.sqlValue, direction.sqlValue)
+                .applyFilter(filter)
+                .applyOrder(order)
                 .limit(1)
                 .offset(0)
                 .first(decoding: Row.self)

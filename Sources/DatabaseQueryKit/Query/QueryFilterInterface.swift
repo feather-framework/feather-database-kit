@@ -11,13 +11,38 @@ public protocol QueryFilterInterface {
     associatedtype Field: QueryFieldKey
 
     var field: Field { get }
-    var method: SQLBinaryOperator { get }
-    var value: Encodable { get }
+    var `operator`: SQLBinaryOperator { get }
+    var value: SQLExpression { get }
 }
 
-extension QueryFilterInterface {
+extension SQLSelectBuilder {
 
-    var sqlValue: SQLBind {
-        SQLBind(value)
+    func applyFilter<T: QueryFilterInterface>(
+        _ filter: T?
+    ) -> Self {
+        guard let filter else {
+            return self
+        }
+        return self.where(
+            filter.field.sqlValue,
+            filter.operator,
+            filter.value
+        )
+    }
+}
+
+extension SQLDeleteBuilder {
+
+    func applyFilter<T: QueryFilterInterface>(
+        _ filter: T?
+    ) -> Self {
+        guard let filter else {
+            return self
+        }
+        return self.where(
+            filter.field.sqlValue,
+            filter.operator,
+            filter.value
+        )
     }
 }

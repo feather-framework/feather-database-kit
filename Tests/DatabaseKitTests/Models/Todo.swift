@@ -31,19 +31,7 @@ enum Todo {
     }
 
     // @DatabaseQueryBuilder("todo", Model.self)
-    struct QueryBuilder:
-        QueryBuilderSchema,
-        QueryBuilderAll,
-        QueryBuilderCount,
-        QueryBuilderDelete,
-        QueryBuilderFirst,
-        QueryBuilderInsert,
-        QueryBuilderList,
-        QueryBuilderPrimaryKey,
-        QueryBuilderPrimaryKeyDelete,
-        QueryBuilderPrimaryKeyGet,
-        QueryBuilderPrimaryKeyUpdate
-    {
+    struct QueryBuilder: StandardQueryBuilderPrimaryKey {
         typealias Row = Model
 
         static let tableName = "todo"

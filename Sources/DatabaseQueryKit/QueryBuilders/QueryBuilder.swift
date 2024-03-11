@@ -26,6 +26,11 @@ extension QueryBuilderSchema {
     public func run<T>(
         _ block: ((SQLDatabase) async throws -> T)
     ) async throws -> T {
-        try await block(db.sqlDatabase)
+        do {
+            return try await block(db.sqlDatabase)
+        }
+        catch {
+            throw Database.Error.query(error)
+        }
     }
 }
