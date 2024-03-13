@@ -36,21 +36,20 @@ final class QueryTests: TestCase {
         try await components.runMigrationGroups([
             Todo.MigrationGroup()
         ])
-        
+
         let rdbc = try await components.relationalDatabase()
         let db = try await rdbc.database()
         let todoQueryBuilder = Todo.QueryBuilder(db: db)
-        
+
         let models: [Todo.Model] = (1...50)
             .map {
                 .mock($0)
             }
         try await todoQueryBuilder.insert(models)
 
-
         let count1 = try await todoQueryBuilder.count()
         XCTAssertEqual(count1, 50)
-        
+
         let count2 = try await todoQueryBuilder.count(
             filter: .init(
                 field: .title,
@@ -60,7 +59,6 @@ final class QueryTests: TestCase {
         )
         XCTAssertEqual(count2, 11)
     }
-    
 
     func testGet() async throws {
 
