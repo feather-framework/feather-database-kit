@@ -11,14 +11,14 @@ import SQLKit
 public protocol QueryBuilderAll: QueryBuilderSchema {
 
     func all(
-        filter: QueryFilter<Row.FieldKeys>?
+        filter: QueryFieldFilter<Row.FieldKeys>?
     ) async throws -> [Row]
 }
 
 extension QueryBuilderAll {
 
     public func all(
-        filter: QueryFilter<Row.FieldKeys>? = nil
+        filter: QueryFieldFilter<Row.FieldKeys>? = nil
     ) async throws -> [Row] {
         try await run { db in
             try await db

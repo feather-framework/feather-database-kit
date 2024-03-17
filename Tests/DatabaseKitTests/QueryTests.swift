@@ -4,10 +4,10 @@ import FeatherComponent
 import FeatherRelationalDatabase
 import XCTest
 
-extension Todo.Model {
+extension Test.Model {
 
-    static func mock(_ i: Int = 1) -> Todo.Model {
-        Todo.Model(
+    static func mock(_ i: Int = 1) -> Test.Model {
+        Test.Model(
             id: .init(rawValue: "id-\(i)"),
             title: "title-\(i)",
             notes: "notes-\(i)"
@@ -20,37 +20,37 @@ final class QueryTests: TestCase {
     func testInsert() async throws {
 
         try await components.runMigrationGroups([
-            Todo.MigrationGroup()
+            Test.MigrationGroup()
         ])
 
-        let todo = Todo.Model.mock()
+        let test = Test.Model.mock()
         let rdbc = try await components.relationalDatabase()
         let db = try await rdbc.database()
-        let todoQueryBuilder = Todo.QueryBuilder(db: db)
+        let testQueryBuilder = Test.QueryBuilder(db: db)
 
-        try await todoQueryBuilder.insert(todo)
+        try await testQueryBuilder.insert(test)
     }
 
     func testCount() async throws {
 
         try await components.runMigrationGroups([
-            Todo.MigrationGroup()
+            Test.MigrationGroup()
         ])
 
         let rdbc = try await components.relationalDatabase()
         let db = try await rdbc.database()
-        let todoQueryBuilder = Todo.QueryBuilder(db: db)
+        let testQueryBuilder = Test.QueryBuilder(db: db)
 
-        let models: [Todo.Model] = (1...50)
+        let models: [Test.Model] = (1...50)
             .map {
                 .mock($0)
             }
-        try await todoQueryBuilder.insert(models)
+        try await testQueryBuilder.insert(models)
 
-        let count1 = try await todoQueryBuilder.count()
+        let count1 = try await testQueryBuilder.count()
         XCTAssertEqual(count1, 50)
 
-        let count2 = try await todoQueryBuilder.count(
+        let count2 = try await testQueryBuilder.count(
             filter: .init(
                 field: .title,
                 operator: .like,
@@ -63,37 +63,37 @@ final class QueryTests: TestCase {
     func testGet() async throws {
 
         try await components.runMigrationGroups([
-            Todo.MigrationGroup()
+            Test.MigrationGroup()
         ])
 
-        let todo = Todo.Model.mock()
+        let test = Test.Model.mock()
         let rdbc = try await components.relationalDatabase()
         let db = try await rdbc.database()
-        let todoQueryBuilder = Todo.QueryBuilder(db: db)
-        try await todoQueryBuilder.insert(todo)
+        let testQueryBuilder = Test.QueryBuilder(db: db)
+        try await testQueryBuilder.insert(test)
 
-        let todo1 = try await todoQueryBuilder.get("id-1")
+        let test1 = try await testQueryBuilder.get("id-1")
 
-        XCTAssertEqual(todo1?.id.rawValue, "id-1")
+        XCTAssertEqual(test1?.id.rawValue, "id-1")
 
     }
 
     func testFirst() async throws {
 
         try await components.runMigrationGroups([
-            Todo.MigrationGroup()
+            Test.MigrationGroup()
         ])
 
         let rdbc = try await components.relationalDatabase()
         let db = try await rdbc.database()
-        let todoQueryBuilder = Todo.QueryBuilder(db: db)
+        let testQueryBuilder = Test.QueryBuilder(db: db)
 
-        let todo1 = Todo.Model.mock(1)
-        try await todoQueryBuilder.insert(todo1)
-        let todo2 = Todo.Model.mock(2)
-        try await todoQueryBuilder.insert(todo2)
+        let test1 = Test.Model.mock(1)
+        try await testQueryBuilder.insert(test1)
+        let test2 = Test.Model.mock(2)
+        try await testQueryBuilder.insert(test2)
 
-        let res1 = try await todoQueryBuilder.first(
+        let res1 = try await testQueryBuilder.first(
             filter: .init(
                 field: .id,
                 operator: .in,
@@ -105,9 +105,9 @@ final class QueryTests: TestCase {
             )
         )
 
-        XCTAssertEqual(todo2.id, res1?.id)
+        XCTAssertEqual(test2.id, res1?.id)
 
-        let res2 = try await todoQueryBuilder.first(
+        let res2 = try await testQueryBuilder.first(
             filter: .init(
                 field: .id,
                 operator: .equal,
@@ -115,63 +115,63 @@ final class QueryTests: TestCase {
             )
         )
 
-        XCTAssertEqual(todo2.id, res2?.id)
+        XCTAssertEqual(test2.id, res2?.id)
     }
 
     func testUpdate() async throws {
 
         try await components.runMigrationGroups([
-            Todo.MigrationGroup()
+            Test.MigrationGroup()
         ])
 
-        let todo = Todo.Model.mock()
+        let test = Test.Model.mock()
         let rdbc = try await components.relationalDatabase()
         let db = try await rdbc.database()
-        let todoQueryBuilder = Todo.QueryBuilder(db: db)
-        try await todoQueryBuilder.insert(todo)
+        let testQueryBuilder = Test.QueryBuilder(db: db)
+        try await testQueryBuilder.insert(test)
 
-        try await todoQueryBuilder.update("id-1", .mock(2))
+        try await testQueryBuilder.update("id-1", .mock(2))
 
-        let todo1 = try await todoQueryBuilder.get("id-2")
-        XCTAssertEqual(todo1?.id.rawValue, "id-2")
-        XCTAssertEqual(todo1?.title, "title-2")
-        XCTAssertEqual(todo1?.notes, "notes-2")
+        let test1 = try await testQueryBuilder.get("id-2")
+        XCTAssertEqual(test1?.id.rawValue, "id-2")
+        XCTAssertEqual(test1?.title, "title-2")
+        XCTAssertEqual(test1?.notes, "notes-2")
     }
 
     func testDelete() async throws {
         try await components.runMigrationGroups([
-            Todo.MigrationGroup()
+            Test.MigrationGroup()
         ])
 
         let rdbc = try await components.relationalDatabase()
         let db = try await rdbc.database()
-        let todoQueryBuilder = Todo.QueryBuilder(db: db)
+        let testQueryBuilder = Test.QueryBuilder(db: db)
 
-        let models: [Todo.Model] = (1...6)
+        let models: [Test.Model] = (1...6)
             .map {
                 .mock($0)
             }
-        try await todoQueryBuilder.insert(models)
+        try await testQueryBuilder.insert(models)
 
-        let total = try await todoQueryBuilder.count()
+        let total = try await testQueryBuilder.count()
         XCTAssertEqual(total, 6)
 
-        print(try await todoQueryBuilder.all())
+        print(try await testQueryBuilder.all())
 
-        try await todoQueryBuilder.delete(Key<Todo>("id-1"))
+        try await testQueryBuilder.delete(Key<Test>("id-1"))
 
-        try await todoQueryBuilder.delete(
+        try await testQueryBuilder.delete(
             filter: .init(
                 field: .id,
                 operator: .in,
                 value: [
-                    Key<Todo>("id-2"),
-                    Key<Todo>("id-3"),
+                    Key<Test>("id-2"),
+                    Key<Test>("id-3"),
                 ]
             )
         )
 
-        try await todoQueryBuilder.delete(
+        try await testQueryBuilder.delete(
             filter: .init(
                 field: .title,
                 operator: .in,
@@ -182,7 +182,7 @@ final class QueryTests: TestCase {
             )
         )
 
-        let all = try await todoQueryBuilder.all()
+        let all = try await testQueryBuilder.all()
         XCTAssertEqual(all.count, 1)
         XCTAssertEqual(all[0].id.rawValue, "id-6")
     }
@@ -190,23 +190,23 @@ final class QueryTests: TestCase {
     func testAll() async throws {
 
         try await components.runMigrationGroups([
-            Todo.MigrationGroup()
+            Test.MigrationGroup()
         ])
 
         let rdbc = try await components.relationalDatabase()
         let db = try await rdbc.database()
-        let todoQueryBuilder = Todo.QueryBuilder(db: db)
+        let testQueryBuilder = Test.QueryBuilder(db: db)
 
-        let models: [Todo.Model] = (1...50)
+        let models: [Test.Model] = (1...50)
             .map {
                 .mock($0)
             }
-        try await todoQueryBuilder.insert(models)
+        try await testQueryBuilder.insert(models)
 
-        let res1 = try await todoQueryBuilder.all()
+        let res1 = try await testQueryBuilder.all()
         XCTAssertEqual(res1.count, 50)
 
-        let res2 = try await todoQueryBuilder.all(
+        let res2 = try await testQueryBuilder.all(
             filter: .init(
                 field: .title,
                 operator: .in,
@@ -215,7 +215,7 @@ final class QueryTests: TestCase {
         )
         XCTAssertEqual(res2.count, 2)
 
-        let res3 = try await todoQueryBuilder.all(
+        let res3 = try await testQueryBuilder.all(
             filter: .init(
                 field: .title,
                 operator: .equal,
@@ -228,20 +228,20 @@ final class QueryTests: TestCase {
     func testListFilterGroupUsingOrRelation() async throws {
 
         try await components.runMigrationGroups([
-            Todo.MigrationGroup()
+            Test.MigrationGroup()
         ])
 
         let rdbc = try await components.relationalDatabase()
         let db = try await rdbc.database()
-        let todoQueryBuilder = Todo.QueryBuilder(db: db)
+        let testQueryBuilder = Test.QueryBuilder(db: db)
 
-        let models: [Todo.Model] = (1...50)
+        let models: [Test.Model] = (1...50)
             .map {
                 .mock($0)
             }
-        try await todoQueryBuilder.insert(models)
+        try await testQueryBuilder.insert(models)
 
-        let list1 = try await todoQueryBuilder.list(
+        let list1 = try await testQueryBuilder.list(
             .init(
                 page: .init(
                     size: 5,
@@ -253,19 +253,24 @@ final class QueryTests: TestCase {
                         direction: .asc
                     )
                 ],
-                filterGroup: .init(
-                    relation: .or,
-                    filters: [
+                filter: .init(
+                    relation: .and,
+                    groups: [
                         .init(
-                            field: .title,
-                            operator: .in,
-                            value: ["title-1", "title-2"]
-                        ),
-                        .init(
-                            field: .notes,
-                            operator: .equal,
-                            value: "notes-3"
-                        ),
+                            relation: .or,
+                            fields: [
+                                .init(
+                                    field: .title,
+                                    operator: .in,
+                                    value: ["title-1", "title-2"]
+                                ),
+                                .init(
+                                    field: .notes,
+                                    operator: .equal,
+                                    value: "notes-3"
+                                ),
+                            ]
+                        )
                     ]
                 )
             )
@@ -278,17 +283,85 @@ final class QueryTests: TestCase {
         XCTAssertEqual(list1.items[2].title, "title-3")
     }
 
-    func testListOrder() async throws {
+    func testListFilterGroupRelation() async throws {
 
         try await components.runMigrationGroups([
-            Todo.MigrationGroup()
+            Test.MigrationGroup()
         ])
 
         let rdbc = try await components.relationalDatabase()
         let db = try await rdbc.database()
-        let todoQueryBuilder = Todo.QueryBuilder(db: db)
+        let testQueryBuilder = Test.QueryBuilder(db: db)
 
-        try await todoQueryBuilder.insert(
+        let models: [Test.Model] = (1...50)
+            .map {
+                .mock($0)
+            }
+        try await testQueryBuilder.insert(models)
+
+        let list1 = try await testQueryBuilder.list(
+            .init(
+                page: .init(
+                    size: 5,
+                    index: 0
+                ),
+                orders: [
+                    .init(
+                        field: .title,
+                        direction: .asc
+                    )
+                ],
+                filter: .init(
+                    relation: .and,
+                    groups: [
+                        .init(
+                            relation: .and,
+                            fields: [
+                                .init(
+                                    field: .title,
+                                    operator: .like,
+                                    value: "title-1%"
+                                )
+                            ]
+                        ),
+                        .init(
+                            relation: .or,
+                            fields: [
+                                .init(
+                                    field: .title,
+                                    operator: .in,
+                                    value: ["title-11", "title-12"]
+                                ),
+                                .init(
+                                    field: .notes,
+                                    operator: .equal,
+                                    value: "notes-13"
+                                ),
+                            ]
+                        ),
+                    ]
+                )
+            )
+        )
+
+        XCTAssertEqual(list1.total, 3)
+        XCTAssertEqual(list1.items.count, 3)
+        XCTAssertEqual(list1.items[0].title, "title-11")
+        XCTAssertEqual(list1.items[1].title, "title-12")
+        XCTAssertEqual(list1.items[2].title, "title-13")
+    }
+
+    func testListOrder() async throws {
+
+        try await components.runMigrationGroups([
+            Test.MigrationGroup()
+        ])
+
+        let rdbc = try await components.relationalDatabase()
+        let db = try await rdbc.database()
+        let testQueryBuilder = Test.QueryBuilder(db: db)
+
+        try await testQueryBuilder.insert(
             [
                 .init(
                     id: .init(
@@ -321,7 +394,7 @@ final class QueryTests: TestCase {
             ]
         )
 
-        let list1 = try await todoQueryBuilder.list(
+        let list1 = try await testQueryBuilder.list(
             .init(
                 page: .init(
                     size: 5,
@@ -360,20 +433,20 @@ final class QueryTests: TestCase {
     func testList() async throws {
 
         try await components.runMigrationGroups([
-            Todo.MigrationGroup()
+            Test.MigrationGroup()
         ])
 
         let rdbc = try await components.relationalDatabase()
         let db = try await rdbc.database()
-        let todoQueryBuilder = Todo.QueryBuilder(db: db)
+        let testQueryBuilder = Test.QueryBuilder(db: db)
 
-        let models: [Todo.Model] = (1...50)
+        let models: [Test.Model] = (1...50)
             .map {
                 .mock($0)
             }
-        try await todoQueryBuilder.insert(models)
+        try await testQueryBuilder.insert(models)
 
-        let list1 = try await todoQueryBuilder.list(
+        let list1 = try await testQueryBuilder.list(
             .init(
                 page: .init(
                     size: 5,
@@ -385,19 +458,24 @@ final class QueryTests: TestCase {
                         direction: .desc
                     )
                 ],
-                filterGroup: .init(
+                filter: .init(
                     relation: .and,
-                    filters: [
+                    groups: [
                         .init(
-                            field: .title,
-                            operator: .like,
-                            value: "%title-1%"
-                        ),
-                        .init(
-                            field: .notes,
-                            operator: .like,
-                            value: "%notes-1%"
-                        ),
+                            relation: .and,
+                            fields: [
+                                .init(
+                                    field: .title,
+                                    operator: .like,
+                                    value: "%title-1%"
+                                ),
+                                .init(
+                                    field: .notes,
+                                    operator: .like,
+                                    value: "%notes-1%"
+                                ),
+                            ]
+                        )
                     ]
                 )
             )
@@ -411,7 +489,7 @@ final class QueryTests: TestCase {
         XCTAssertEqual(list1.items[3].title, "title-16")
         XCTAssertEqual(list1.items[4].title, "title-15")
 
-        let list2 = try await todoQueryBuilder.list(
+        let list2 = try await testQueryBuilder.list(
             .init(
                 page: .init(
                     size: 5,
@@ -423,19 +501,24 @@ final class QueryTests: TestCase {
                         direction: .desc
                     )
                 ],
-                filterGroup: .init(
+                filter: .init(
                     relation: .and,
-                    filters: [
+                    groups: [
                         .init(
-                            field: .title,
-                            operator: .like,
-                            value: "%title-1%"
-                        ),
-                        .init(
-                            field: .notes,
-                            operator: .like,
-                            value: "%notes-1%"
-                        ),
+                            relation: .and,
+                            fields: [
+                                .init(
+                                    field: .title,
+                                    operator: .like,
+                                    value: "%title-1%"
+                                ),
+                                .init(
+                                    field: .notes,
+                                    operator: .like,
+                                    value: "%notes-1%"
+                                ),
+                            ]
+                        )
                     ]
                 )
             )
@@ -449,7 +532,7 @@ final class QueryTests: TestCase {
         XCTAssertEqual(list2.items[3].title, "title-11")
         XCTAssertEqual(list2.items[4].title, "title-10")
 
-        let list3 = try await todoQueryBuilder.list(
+        let list3 = try await testQueryBuilder.list(
             .init(
                 page: .init(
                     size: 5,
@@ -461,19 +544,24 @@ final class QueryTests: TestCase {
                         direction: .desc
                     )
                 ],
-                filterGroup: .init(
+                filter: .init(
                     relation: .and,
-                    filters: [
+                    groups: [
                         .init(
-                            field: .title,
-                            operator: .like,
-                            value: "%title-1%"
-                        ),
-                        .init(
-                            field: .notes,
-                            operator: .like,
-                            value: "%notes-1%"
-                        ),
+                            relation: .and,
+                            fields: [
+                                .init(
+                                    field: .title,
+                                    operator: .like,
+                                    value: "%title-1%"
+                                ),
+                                .init(
+                                    field: .notes,
+                                    operator: .like,
+                                    value: "%notes-1%"
+                                ),
+                            ]
+                        )
                     ]
                 )
             )

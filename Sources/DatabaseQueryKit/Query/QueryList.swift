@@ -11,16 +11,16 @@ public struct QueryList<F: QueryFieldKey>: QueryListInterface {
     //public let column: QueryColumn<F>
     public let page: QueryPage
     public let orders: [QueryOrder<F>]
-    public let filterGroup: QueryFilterGroup<F>?
+    public let filter: QueryFilter<F>?
 
     public init(
         page: QueryPage,
         orders: [QueryOrder<F>] = [],
-        filterGroup: QueryFilterGroup<F>? = nil
+        filter: QueryFilter<F>? = nil
     ) {
         self.page = page
         self.orders = orders
-        self.filterGroup = filterGroup
+        self.filter = filter
     }
 
     public struct Result<T: Codable> {

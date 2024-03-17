@@ -2,35 +2,20 @@
 //  File.swift
 //
 //
-//  Created by Tibor Bodecs on 07/03/2024.
+//  Created by Tibor Bodecs on 17/03/2024.
 //
 
-import SQLKit
-
+// TODO: create a real predicate builder
 public struct QueryFilter<F: QueryFieldKey>: QueryFilterInterface {
 
-    public let field: F
-    public let `operator`: SQLBinaryOperator
-    public var value: SQLExpression
+    public let relation: QueryFilterRelation
+    public let groups: [any QueryFilterGroupInterface]
 
-    public init<T: Encodable>(
-        field: F,
-        operator: SQLBinaryOperator,
-        value: [T]
+    public init(
+        relation: QueryFilterRelation = .and,
+        groups: [QueryFilterGroup<F>]
     ) {
-        self.field = field
-        self.operator = `operator`
-        self.value = SQLBind.group(value)
+        self.relation = relation
+        self.groups = groups
     }
-
-    public init<T: Encodable>(
-        field: F,
-        operator: SQLBinaryOperator,
-        value: T
-    ) {
-        self.field = field
-        self.operator = `operator`
-        self.value = SQLBind(value)
-    }
-
 }

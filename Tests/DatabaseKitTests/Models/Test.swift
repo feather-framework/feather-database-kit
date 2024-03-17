@@ -11,7 +11,7 @@ import FeatherRelationalDatabase
 import MigrationKit
 import SQLKit
 
-enum Todo {
+enum Test {
 
     // @DatabaseQueryModel
     struct Model: QueryModel {
@@ -25,16 +25,16 @@ enum Todo {
         static let fieldKeys = CodingKeys.self
 
         // MARK: - fields
-        let id: Key<Todo>
+        let id: Key<Test>
         let title: String
         let notes: String?
     }
 
-    // @DatabaseQueryBuilder("todo", Model.self)
+    // @DatabaseQueryBuilder("test", Model.self)
     struct QueryBuilder: StandardQueryBuilderPrimaryKey {
         typealias Row = Model
 
-        static let tableName = "todo"
+        static let tableName = "test"
         static let primaryKey = Model.FieldKeys.id
 
         let db: Database
@@ -47,7 +47,7 @@ enum Todo {
         public let tableName: String
 
         public init() {
-            self.tableName = "todo"
+            self.tableName = "test"
         }
 
         public func statements(

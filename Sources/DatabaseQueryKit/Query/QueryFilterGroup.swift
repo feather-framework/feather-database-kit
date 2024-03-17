@@ -10,13 +10,13 @@ import SQLKit
 public struct QueryFilterGroup<F: QueryFieldKey>: QueryFilterGroupInterface {
 
     public let relation: QueryFilterRelation
-    public let filters: [any QueryFilterInterface]
+    public let fields: [any QueryFieldFilterInterface]
 
     public init(
         relation: QueryFilterRelation = .and,
-        filters: [QueryFilter<F>]
+        fields: [QueryFieldFilter<F>]
     ) {
         self.relation = relation
-        self.filters = filters
+        self.fields = fields
     }
 }

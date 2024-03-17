@@ -7,15 +7,10 @@
 
 import SQLKit
 
-public enum QueryFilterRelation {
-    case and
-    case or
-}
-
-protocol QueryFilterGroupInterface {
+public protocol QueryFilterGroupInterface {
 
     var relation: QueryFilterRelation { get }
-    var filters: [any QueryFilterInterface] { get }
+    var fields: [any QueryFieldFilterInterface] { get }
 }
 
 //// SELECT * FROM galaxies WHERE name != NULL AND (name == ? OR name == ?)
@@ -31,28 +26,91 @@ protocol QueryFilterGroupInterface {
 
 extension SQLSelectBuilder {
 
-    func applyFilterGroup<T: QueryFilterGroupInterface>(
-        _ group: T?
+    func applyFilterGroups<T: QueryFilterGroupInterface>(
+        _ groups: [T]
     ) -> Self {
-        guard let group else {
+        var res = self
+        for group in groups {
+            res = res.where { p in
+                var p = p
+                for filter in group.fields {
+                    switch group.relation {
+                    case .and:
+                        p = p.where(
+                            filter.field.sqlValue,
+                            filter.operator,
+                            filter.value
+                        )
+                    case .or:
+                        p = p.orWhere(
+                            filter.field.sqlValue,
+                            filter.operator,
+                            filter.value
+                        )
+                    }
+                }
+                return p
+            }
+        }
+        return res
+    }
+}
+
+extension SQLSelectBuilder {
+
+    func applyFilter(
+        _ filter: (any QueryFilterInterface)?
+    ) -> Self {
+        guard let filter else {
             return self
         }
         var res = self
-        for filter in group.filters {
-            switch group.relation {
+        for group in filter.groups {
+            switch filter.relation {
             case .and:
-                res = res.where(
-                    filter.field.sqlValue,
-                    filter.operator,
-                    filter.value
-                )
+                res = res.where { p in
+                    var p = p
+                    for filter in group.fields {
+                        switch group.relation {
+                        case .and:
+                            p = p.where(
+                                filter.field.sqlValue,
+                                filter.operator,
+                                filter.value
+                            )
+                        case .or:
+                            p = p.orWhere(
+                                filter.field.sqlValue,
+                                filter.operator,
+                                filter.value
+                            )
+                        }
+                    }
+                    return p
+                }
             case .or:
-                res = res.orWhere(
-                    filter.field.sqlValue,
-                    filter.operator,
-                    filter.value
-                )
+                res = res.orWhere { p in
+                    var p = p
+                    for filter in group.fields {
+                        switch group.relation {
+                        case .and:
+                            p = p.where(
+                                filter.field.sqlValue,
+                                filter.operator,
+                                filter.value
+                            )
+                        case .or:
+                            p = p.orWhere(
+                                filter.field.sqlValue,
+                                filter.operator,
+                                filter.value
+                            )
+                        }
+                    }
+                    return p
+                }
             }
+
         }
         return res
     }

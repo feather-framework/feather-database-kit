@@ -12,5 +12,5 @@ public protocol QueryListInterface {
 
     var page: QueryPage { get }
     var orders: [QueryOrder<Field>] { get }
-    var filterGroup: QueryFilterGroup<Field>? { get }
+    var filter: QueryFilter<Field>? { get }
 }
