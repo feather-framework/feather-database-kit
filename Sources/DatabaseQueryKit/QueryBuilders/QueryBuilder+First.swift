@@ -11,7 +11,7 @@ import SQLKit
 public protocol QueryBuilderFirst: QueryBuilderSchema {
 
     func first(
-        filter: QueryFilter<Row.FieldKeys>,
+        filter: QueryFieldFilter<Row.FieldKeys>,
         order: QueryOrder<Row.FieldKeys>?
     ) async throws -> Row?
 }
@@ -19,7 +19,7 @@ public protocol QueryBuilderFirst: QueryBuilderSchema {
 extension QueryBuilderFirst {
 
     public func first(
-        filter: QueryFilter<Row.FieldKeys>,
+        filter: QueryFieldFilter<Row.FieldKeys>,
         order: QueryOrder<Row.FieldKeys>? = nil
     ) async throws -> Row? {
         try await run { db in

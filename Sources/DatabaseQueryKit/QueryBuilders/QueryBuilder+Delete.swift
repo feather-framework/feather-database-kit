@@ -11,14 +11,14 @@ import SQLKit
 public protocol QueryBuilderDelete: QueryBuilderSchema {
 
     func delete(
-        filter: QueryFilter<Row.FieldKeys>
+        filter: QueryFieldFilter<Row.FieldKeys>
     ) async throws
 }
 
 extension QueryBuilderDelete {
 
     public func delete(
-        filter: QueryFilter<Row.FieldKeys>
+        filter: QueryFieldFilter<Row.FieldKeys>
     ) async throws {
         try await run { db in
             try await db

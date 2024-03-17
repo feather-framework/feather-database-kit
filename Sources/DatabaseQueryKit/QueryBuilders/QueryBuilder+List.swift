@@ -26,7 +26,7 @@ extension QueryBuilderList {
                 .select()
                 .from(Self.tableName)
                 .column(SQLFunction("COUNT"), as: "count")
-                .applyFilterGroup(query.filterGroup)
+                .applyFilter(query.filter)
                 .applyOrders(query.orders)
                 .first(decoding: RowCount.self)?
                 .count ?? 0
@@ -36,7 +36,7 @@ extension QueryBuilderList {
                 .select()
                 .from(Self.tableName)
                 .column("*")
-                .applyFilterGroup(query.filterGroup)
+                .applyFilter(query.filter)
                 .applyOrders(query.orders)
                 .applyPage(query.page)
                 .all(decoding: Row.self)

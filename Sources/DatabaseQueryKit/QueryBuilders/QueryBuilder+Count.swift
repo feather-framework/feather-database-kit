@@ -15,14 +15,14 @@ struct RowCount: Decodable {
 public protocol QueryBuilderCount: QueryBuilderSchema {
 
     func count(
-        filter: QueryFilter<Row.FieldKeys>?
+        filter: QueryFieldFilter<Row.FieldKeys>?
     ) async throws -> UInt
 }
 
 extension QueryBuilderCount {
 
     public func count(
-        filter: QueryFilter<Row.FieldKeys>? = nil
+        filter: QueryFieldFilter<Row.FieldKeys>? = nil
     ) async throws -> UInt {
         try await run { db in
             try await db
