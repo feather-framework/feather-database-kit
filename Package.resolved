@@ -118,6 +118,15 @@
       }
     },
     {
+      "identity" : "swift-nanoid",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/binarybirds/swift-nanoid",
+      "state" : {
+        "revision" : "a7ec5dde163e607ea5fbd473eb5a58908d043eed",
+        "version" : "1.0.0"
+      }
+    },
+    {
       "identity" : "swift-nio",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-nio.git",
