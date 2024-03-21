@@ -17,6 +17,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/apple/swift-log", from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-nio", from: "2.61.0"),
+        .package(url: "https://github.com/binarybirds/swift-nanoid", from: "1.0.0"),
         .package(url: "https://github.com/feather-framework/feather-migration-kit", .upToNextMinor(from: "0.1.0")),
         .package(url: "https://github.com/feather-framework/feather-component", .upToNextMinor(from: "0.4.0")),
         .package(url: "https://github.com/feather-framework/feather-relational-database", .upToNextMinor(from: "0.2.0")),
@@ -29,6 +30,7 @@ let package = Package(
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "FeatherComponent", package: "feather-component"),
                 .product(name: "FeatherRelationalDatabase", package: "feather-relational-database"),
+                .product(name: "NanoID", package: "swift-nanoid"),
             ]
         ),
         .target(
