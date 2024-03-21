@@ -18,7 +18,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-log", from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-nio", from: "2.61.0"),
         .package(url: "https://github.com/binarybirds/swift-nanoid", from: "1.0.0"),
-        .package(url: "https://github.com/feather-framework/feather-migration-kit", .upToNextMinor(from: "0.1.0")),
+        .package(url: "https://github.com/feather-framework/feather-migration-kit", .upToNextMinor(from: "0.2.0")),
         .package(url: "https://github.com/feather-framework/feather-component", .upToNextMinor(from: "0.4.0")),
         .package(url: "https://github.com/feather-framework/feather-relational-database", .upToNextMinor(from: "0.2.0")),
         .package(url: "https://github.com/feather-framework/feather-relational-database-driver-sqlite", .upToNextMinor(from: "0.2.0")),
