@@ -10,7 +10,7 @@ import FeatherRelationalDatabase
 
 public struct Database: Sendable {
 
-    let sqlDatabase: SQLDatabase
+    public let sqlDatabase: SQLDatabase
 
     public init(_ sqlDatabase: SQLDatabase) {
         self.sqlDatabase = sqlDatabase

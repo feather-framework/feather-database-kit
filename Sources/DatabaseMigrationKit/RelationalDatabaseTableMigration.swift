@@ -5,6 +5,7 @@
 //  Created by Tibor Bodecs on 06/01/2024.
 //
 
+import DatabaseQueryKit
 import FeatherComponent
 import FeatherRelationalDatabase
 import MigrationKit
@@ -17,12 +18,12 @@ public protocol RelationalDatabaseTableMigration: RelationalDatabaseMigration {
 
 extension RelationalDatabaseTableMigration {
 
-    public func perform(_ db: SQLDatabase) async throws {
-        let builder = db.create(table: tableName).ifNotExists()
+    public func perform(_ db: Database) async throws {
+        let builder = db.sqlDatabase.create(table: tableName).ifNotExists()
         try await statements(builder).run()
     }
 
-    public func revert(_ db: SQLDatabase) async throws {
-        try await db.drop(table: tableName).run()
+    public func revert(_ db: Database) async throws {
+        try await db.sqlDatabase.drop(table: tableName).run()
     }
 }

@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/feather-framework/feather-migration-kit",
       "state" : {
-        "revision" : "7425a522cdb62098f5b679ffe48775b5585ba147",
-        "version" : "0.1.0"
+        "revision" : "10f32b3493bef4800f8f897f88fab6c63e2b450e",
+        "version" : "0.2.0"
       }
     },
     {
