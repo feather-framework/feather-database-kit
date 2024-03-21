@@ -38,6 +38,7 @@ let package = Package(
             dependencies: [
                 .product(name: "MigrationKit", package: "feather-migration-kit"),
                 .product(name: "FeatherRelationalDatabase", package: "feather-relational-database"),
+                .target(name: "DatabaseQueryKit"),
             ]
         ),
         .testTarget(
