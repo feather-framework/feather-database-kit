@@ -224,7 +224,7 @@ final class QueryTests: TestCase {
         )
         XCTAssertEqual(res3.count, 1)
     }
-    
+
     func testAllWithOrder() async throws {
 
         try await components.runMigrationGroups([
@@ -601,8 +601,7 @@ final class QueryTests: TestCase {
         XCTAssertEqual(list3.items.count, 1)
         XCTAssertEqual(list3.items[0].title, "title-1")
     }
-    
-    
+
     func testListWithoutPaging() async throws {
 
         try await components.runMigrationGroups([
@@ -633,5 +632,5 @@ final class QueryTests: TestCase {
         XCTAssertEqual(list1.total, 50)
         XCTAssertEqual(list1.items.count, 50)
     }
-    
+
 }
