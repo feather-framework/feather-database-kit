@@ -8,6 +8,7 @@ fatal() { error "$@"; exit 1; }
 CURRENT_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 REPO_ROOT="$(git -C "${CURRENT_SCRIPT_DIR}" rev-parse --show-toplevel)"
 
+git fetch -t 
 LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
 swift package diagnose-api-breaking-changes "$LATEST_TAG"
 
