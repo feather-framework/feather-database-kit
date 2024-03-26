@@ -11,7 +11,7 @@ REPO_ROOT="$(git -C "${CURRENT_SCRIPT_DIR}" rev-parse --show-toplevel)"
 git fetch -t 
 LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
 #swift package diagnose-api-breaking-changes "$LATEST_TAG"
-swift package diagnose-api-breaking-changes 0.7.0
+swift package diagnose-api-breaking-changes 0.7.0 2>&1
 
 # if [ "${NUM_BROKEN_SYMLINKS}" -gt 0 ]; then
 #   fatal "❌ Found ${NUM_BROKEN_SYMLINKS} symlinks."
