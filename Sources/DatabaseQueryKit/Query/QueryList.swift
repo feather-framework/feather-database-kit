@@ -9,12 +9,12 @@ import SQLKit
 
 public struct QueryList<F: QueryFieldKey>: QueryListInterface {
     //public let column: QueryColumn<F>
-    public let page: QueryPage
+    public let page: QueryPage?
     public let orders: [QueryOrder<F>]
     public let filter: QueryFilter<F>?
 
     public init(
-        page: QueryPage,
+        page: QueryPage? = nil,
         orders: [QueryOrder<F>] = [],
         filter: QueryFilter<F>? = nil
     ) {
