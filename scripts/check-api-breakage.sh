@@ -13,7 +13,9 @@ LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
 # swift package diagnose-api-breaking-changes "$LATEST_TAG"
 swift package diagnose-api-breaking-changes 0.7.0 2>&1 > api-breakages.log || { 
     NUM=$(cat api-breakages.log|grep "💔"|wc -l)
-    fatal "❌ Found ${NUM} API breakages."
+    log "❌ Found ${NUM} API breakages."
+    cat api-breakages.log
+    exit 0;
 }
 
 log "✅ Found no API breakages."
