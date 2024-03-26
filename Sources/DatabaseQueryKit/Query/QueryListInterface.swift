@@ -10,7 +10,7 @@ import Foundation
 public protocol QueryListInterface {
     associatedtype Field: QueryFieldKey
 
-    var page: QueryPage { get }
+    var page: QueryPage? { get }
     var orders: [QueryOrder<Field>] { get }
     var filter: QueryFilter<Field>? { get }
 }

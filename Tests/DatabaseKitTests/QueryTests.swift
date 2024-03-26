@@ -225,6 +225,36 @@ final class QueryTests: TestCase {
         XCTAssertEqual(res3.count, 1)
     }
 
+    func testAllWithOrder() async throws {
+
+        try await components.runMigrationGroups([
+            Test.MigrationGroup()
+        ])
+
+        let rdbc = try await components.relationalDatabase()
+        let db = try await rdbc.database()
+        let testQueryBuilder = Test.QueryBuilder(db: db)
+
+        let models: [Test.Model] = (1...50)
+            .map {
+                .mock($0)
+            }
+        try await testQueryBuilder.insert(models)
+
+        let res1 = try await testQueryBuilder.all()
+        XCTAssertEqual(res1.count, 50)
+
+        let res2 = try await testQueryBuilder.all(
+            orders: [
+                .init(
+                    field: .title,
+                    direction: .desc
+                )
+            ]
+        )
+        XCTAssertEqual(res2[0].title, "title-9")
+    }
+
     func testListFilterGroupUsingOrRelation() async throws {
 
         try await components.runMigrationGroups([
@@ -571,4 +601,36 @@ final class QueryTests: TestCase {
         XCTAssertEqual(list3.items.count, 1)
         XCTAssertEqual(list3.items[0].title, "title-1")
     }
+
+    func testListWithoutPaging() async throws {
+
+        try await components.runMigrationGroups([
+            Test.MigrationGroup()
+        ])
+
+        let rdbc = try await components.relationalDatabase()
+        let db = try await rdbc.database()
+        let testQueryBuilder = Test.QueryBuilder(db: db)
+
+        let models: [Test.Model] = (1...50)
+            .map {
+                .mock($0)
+            }
+        try await testQueryBuilder.insert(models)
+
+        let list1 = try await testQueryBuilder.list(
+            .init(
+                orders: [
+                    .init(
+                        field: .title,
+                        direction: .desc
+                    )
+                ]
+            )
+        )
+
+        XCTAssertEqual(list1.total, 50)
+        XCTAssertEqual(list1.items.count, 50)
+    }
+
 }
