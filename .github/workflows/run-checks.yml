@@ -58,8 +58,6 @@ jobs:
         # message: |
         #   Hello world ! :wave:
 
-      
-
     # - name: Get log
     #   id: vars
     #   run: echo "log=$(cat api-breakage-output.log)" >> $GITHUB_OUTPUT
