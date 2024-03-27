@@ -54,8 +54,10 @@ jobs:
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        message: |
-          Hello world ! :wave:
+        filePath: api-breakage-output.log
+        # message: |
+        #   Hello world ! :wave:
+
       
 
     # - name: Get log
