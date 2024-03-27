@@ -41,10 +41,12 @@ jobs:
         fetch-depth: 1
     
     - name: run script
-      run: ./scripts/check-api-breakage.sh
+      run: |
+        ./scripts/check-api-breakage.sh
+        cat api-breakage-output.log >> $GITHUB_OUTPUT
 
-    - name: Add comment
-      uses: mshick/add-pr-comment@v2
-      with:
-        message-path: |
-          api-breakage-output.log
+    # - name: Add comment
+    #   uses: mshick/add-pr-comment@v2
+    #   with:
+    #     message-path: |
+    #       api-breakage-output.log
