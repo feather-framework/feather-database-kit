@@ -1,12 +1,17 @@
 name: Run checks
 
 on:
+  push:
+    branches:
+    - main
+    paths:
+    - '**.swift'
   pull_request:
     branches:
     - main
 
 jobs:
-  
+
   run-checks:
     # runs-on: macOS-latest
     runs-on: self-hosted
@@ -24,3 +29,44 @@ jobs:
     
     - name: run script
       run: ./scripts/run-checks.sh
+
+  run-check-api-breakage:
+    # runs-on: macOS-latest
+    runs-on: self-hosted
+    
+    permissions:
+      pull-requests: write
+
+    steps:
+    
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+    
+    - name: run script
+      run: |
+        ./scripts/check-api-breakage.sh
+        cat api-breakage-output.log >> $GITHUB_STEP_SUMMARY
+
+    - name: Comment PR
+      uses: thollander/actions-comment-pull-request@v2
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        filePath: api-breakage-output.log
+        # message: |
+        #   Hello world ! :wave:
+
+    # - name: Get log
+    #   id: vars
+    #   run: echo "log=$(cat api-breakage-output.log)" >> $GITHUB_OUTPUT
+      
+    # - name: Print log
+    #   run: echo ${{ steps.vars.outputs.log }}
+
+    # - name: Add comment
+    #   uses: mshick/add-pr-comment@v2
+    #   with:
+    #     message-path: |
+    #       api-breakage-output.log
