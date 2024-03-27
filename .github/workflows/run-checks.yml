@@ -41,4 +41,4 @@ jobs:
         fetch-depth: 1
     
     - name: run script
-      run: ./scripts/check-api-breakage.sh
+      run: ./scripts/check-api-breakage.sh >> $GITHUB_OUTPUT
