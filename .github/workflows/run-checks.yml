@@ -45,6 +45,6 @@ jobs:
 
     - name: Add comment
       uses: mshick/add-pr-comment@v2
-        with:
-          message-path: |
-            api-breakage-output.log
+      with:
+        message-path: |
+          api-breakage-output.log
