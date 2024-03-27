@@ -43,7 +43,8 @@ jobs:
     - name: run script
       run: |
         ./scripts/check-api-breakage.sh
-        cat api-breakage-output.log >> $GITHUB_OUTPUT
+        echo "test" >> $GITHUB_OUTPUT
+        # cat api-breakage-output.log >> $GITHUB_OUTPUT
 
     # - name: Add comment
     #   uses: mshick/add-pr-comment@v2
