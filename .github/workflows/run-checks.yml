@@ -41,14 +41,16 @@ jobs:
         fetch-depth: 1
     
     - name: run script
-      run: ./scripts/check-api-breakage.sh
+      run: |
+        ./scripts/check-api-breakage.sh
+        cat api-breakage-output.log >> $GITHUB_STEP_SUMMARY
 
-    - name: Get log
-      id: vars
-      run: echo "log=$(cat api-breakage-output.log)" >> $GITHUB_OUTPUT
+    # - name: Get log
+    #   id: vars
+    #   run: echo "log=$(cat api-breakage-output.log)" >> $GITHUB_OUTPUT
       
-    - name: Print log
-      run: echo ${{ steps.vars.outputs.log }}
+    # - name: Print log
+    #   run: echo ${{ steps.vars.outputs.log }}
 
     # - name: Add comment
     #   uses: mshick/add-pr-comment@v2
