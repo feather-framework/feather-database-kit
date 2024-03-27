@@ -43,7 +43,8 @@ jobs:
     - name: run script
       run: ./scripts/check-api-breakage.sh
 
-    - uses: mshick/add-pr-comment@v2
+    - name: Add comment
+      uses: mshick/add-pr-comment@v2
         with:
           message-path: |
             api-breakage-output.log
