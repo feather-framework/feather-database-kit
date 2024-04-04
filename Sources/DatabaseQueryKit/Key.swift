@@ -31,4 +31,8 @@ public struct Key<T>:
         var container = encoder.singleValueContainer()
         try container.encode(rawValue)
     }
+
+    public func transform<I>(to: I.Type) -> Key<I> {
+        .init(rawValue: self.rawValue)
+    }
 }
