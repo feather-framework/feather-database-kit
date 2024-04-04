@@ -32,7 +32,7 @@ public struct Key<T>:
         try container.encode(rawValue)
     }
 
-    public func cast<I>(to: I.Type) -> Key<I> {
+    public func transform<I>(to: I.Type) -> Key<I> {
         .init(rawValue: self.rawValue)
     }
 }
